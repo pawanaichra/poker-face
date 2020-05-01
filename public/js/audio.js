@@ -16,18 +16,31 @@ var currentId=null;
 var roomId="pawan";
 socket = io();
 document.getElementById('startBtn').addEventListener('click', start);
+document.getElementById('createBtn').addEventListener('click', createRoom);
+document.getElementById('joinBtn').addEventListener('click', joinRoom);
 async function start(){
     localStream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
-    socket.emit('init', roomId, function (roomid, id) {
-        roomId = roomid;
-        currentId = id;
-    });
     socket.on('msg', function (data) {
         handleMessage(data);
     });
     socket.on('peer.connected', function (params) {
         makeOffer(params.id);
     });
+}
+
+async function createRoom(){
+  socket.emit('init', null, function (roomid, id) {
+    roomId = roomid;
+    currentId = id;
+  });
+}
+
+async function joinRoom(){
+  var roomid = prompt("Enter id");
+  socket.emit('init', roomId, function (roomid, id) {
+    roomId = roomid;
+    currentId = id;
+  });
 }
 
 function getPeerConnection(id) {
