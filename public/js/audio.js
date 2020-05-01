@@ -55,10 +55,9 @@ function getPeerConnection(id) {
     };
     pc.onaddstream = function (evnt) {
       console.log('Received new stream');
-      api.trigger('peer.stream', [{
-        id: id,
-        stream: evnt.stream
-      }]);
+      var audio = document.createElement("audio");
+      audio.srcObject=evnt.stream;
+      document.body.appendChild(audio);
     };
     return pc;
 }
