@@ -36,8 +36,8 @@ async function createRoom(){
 }
 
 async function joinRoom(){
-  var roomid = prompt("Enter id");
-  socket.emit('init', roomId, function (roomid, id) {
+  var r = prompt("Enter id");
+  socket.emit('init', { room: r }, function (roomid, id) {
     roomId = roomid;
     currentId = id;
   });
