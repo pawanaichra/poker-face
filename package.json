@@ -1,0 +1,23 @@
+{
+  "name": "poker-face",
+  "version": "1.0.0",
+  "description": "Online poker with audio support",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "poker",
+    "online-poker"
+  ],
+  "author": "Pawan Aichra",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-uuid": "^1.4.8",
+    "socket.io": "^2.3.0"
+  },
+  "engines": {
+    "node": "12.x"
+  }
+}
