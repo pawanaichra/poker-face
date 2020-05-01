@@ -14,9 +14,9 @@ var socket=null;
 var peerConnections = {};
 var currentId=null;
 var roomId="pawan";
+socket = io();
 document.getElementById('startBtn').addEventListener('click', start);
 async function start(){
-    socket = io();
     localStream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
     socket.emit('init', roomId, function (roomid, id) {
         roomId = roomid;
