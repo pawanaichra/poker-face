@@ -19,7 +19,9 @@ document.getElementById('startBtn').addEventListener('click', start);
 document.getElementById('createBtn').addEventListener('click', createRoom);
 document.getElementById('joinBtn').addEventListener('click', joinRoom);
 async function start(){
-    localStream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
+  navigator.mediaDevices.getUserMedia({video: false, audio: true})
+    .then(stream => {localStream = stream;})
+    .catch(e => {console.log("Media not available");});
     socket.on('msg', function (data) {
         console.log(data);
         handleMessage(data);
@@ -56,11 +58,9 @@ function getPeerConnection(id) {
     };
     pc.onaddstream = function (evnt) {
       var audio = document.createElement("audio");
-      audio.setAttribute("srcObject", evnt.stream);
+      x.srcObject=evnt.stream;
       audio.setAttribute("controls", "controls");
       document.body.appendChild(audio);
-      console.log(audio);
-      console.log(evnt.stream);
     };
     return pc;
 }
