@@ -23,7 +23,6 @@ async function start(){
     .then(stream => {localStream = stream;})
     .catch(e => {console.log("Media not available");});
     socket.on('msg', function (data) {
-        console.log(data);
         handleMessage(data);
     });
     socket.on('peer.connected', function (params) {
@@ -59,8 +58,9 @@ function getPeerConnection(id) {
     pc.onaddstream = function (evnt) {
       var audio = document.createElement("audio");
       audio.srcObject=evnt.stream;
-      audio.setAttribute("controls", "controls");
+      // audio.setAttribute("controls", "controls");
       document.body.appendChild(audio);
+      audio.play();
     };
     return pc;
 }
