@@ -21,6 +21,7 @@ document.getElementById('joinBtn').addEventListener('click', joinRoom);
 async function start(){
     localStream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
     socket.on('msg', function (data) {
+        console.log(data);
         handleMessage(data);
     });
     socket.on('peer.connected', function (params) {
@@ -54,11 +55,9 @@ function getPeerConnection(id) {
       socket.emit('msg', { by: currentId, to: id, ice: evnt.candidate, type: 'ice' });
     };
     pc.onaddstream = function (evnt) {
-      console.log('Received new stream');
       var audio = document.createElement("audio");
       audio.srcObject=evnt.stream;
       document.body.appendChild(audio);
-      console.log(evnt.stream);
     };
     return pc;
 }
@@ -85,10 +84,10 @@ function handleMessage(data) {
             pc.setLocalDescription(sdp);
             socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' });
           });
-          console.log("by:"+currentId+"to: "+data.by);
         });
         break;
       case 'sdp-answer':
+        console.log("answer received");
         pc.setRemoteDescription(new RTCSessionDescription(data.sdp), function () {
           console.log('Setting remote description by answer');
         }, function (e) {
