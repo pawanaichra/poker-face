@@ -52,7 +52,7 @@ function getPeerConnection(id) {
     peerConnections[id] = pc;
     pc.addStream(localStream);
     pc.onicecandidate = function (evnt) {
-      socket.emit('msg', { by: currentId, to: id, ice: evnt.candidate, type: 'ice' });
+      socket.emit('msg', { by: currentId, to: id, ice: evnt.candidate, type: 'ice' }, function(ms){console.log(ms);});
     };
     pc.onaddstream = function (evnt) {
       var audio = document.createElement("audio");
@@ -67,7 +67,7 @@ function makeOffer(id) {
     pc.createOffer(function (sdp) {
       pc.setLocalDescription(sdp);
       console.log('Creating an offer for', id);
-      socket.emit('msg', { by: currentId, to: id, sdp: sdp, type: 'sdp-offer' });
+      socket.emit('msg', { by: currentId, to: id, sdp: sdp, type: 'sdp-offer' }, function(ms){console.log(ms);});
     }, function (e) {
       console.log(e);
     },
