@@ -81,8 +81,8 @@ function handleMessage(data) {
         pc.setRemoteDescription(new RTCSessionDescription(data.sdp), function () {
           console.log('Setting remote description by offer');
           pc.createAnswer(function (sdp) {
-            pc.setLocalDescription(sdp);
             console.log("msg sent");
+            pc.setLocalDescription(sdp);
             socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' }, function(ms){console.log(ms);});
           });
         });
