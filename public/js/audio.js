@@ -58,7 +58,7 @@ function getPeerConnection(id) {
     };
     pc.onaddstream = function (evnt) {
       var audio = document.createElement("audio");
-      x.srcObject=evnt.stream;
+      audio.srcObject=evnt.stream;
       audio.setAttribute("controls", "controls");
       document.body.appendChild(audio);
     };
