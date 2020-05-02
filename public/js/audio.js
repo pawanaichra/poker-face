@@ -58,6 +58,7 @@ function getPeerConnection(id) {
       var audio = document.createElement("audio");
       audio.srcObject=evnt.stream;
       document.body.appendChild(audio);
+      console.log(evnt.stream);
     };
     return pc;
 }
@@ -84,6 +85,7 @@ function handleMessage(data) {
             pc.setLocalDescription(sdp);
             socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' });
           });
+          console.log("by:"+currentId+"to: "+data.by);
         });
         break;
       case 'sdp-answer':
