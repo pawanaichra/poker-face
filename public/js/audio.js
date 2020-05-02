@@ -91,6 +91,7 @@ function handleMessage(data) {
           .then(() => pc.createAnswer())
           .then(sdp => pc.setLocalDescription(sdp))
           .then(() => {
+            var sdp = pc.localDescription;
             console.log("msg sent");
             socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' }, function(ms){console.log(ms);});
           })
