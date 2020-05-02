@@ -78,14 +78,23 @@ function handleMessage(data) {
     var pc = getPeerConnection(data.by);
     switch (data.type) {
       case 'sdp-offer':
-        pc.setRemoteDescription(new RTCSessionDescription(data.sdp), function () {
-          console.log('Setting remote description by offer');
-          pc.createAnswer(function (sdp) {
+        // pc.setRemoteDescription(new RTCSessionDescription(data.sdp), function () {
+        //   console.log('Setting remote description by offer');
+        //   console.log(pc);
+        //   pc.createAnswer(function (sdp) {
+        //     console.log("msg sent");
+        //     pc.setLocalDescription(sdp);
+        //     socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' }, function(ms){console.log(ms);});
+        //   });
+        // });
+        pc.setRemoteDescription(new RTCSessionDescription(data.sdp))
+          .then(() => pc.createAnswer())
+          .then(sdp => pc.setLocalDescription(sdp))
+          .then(() => {
             console.log("msg sent");
-            pc.setLocalDescription(sdp);
             socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' }, function(ms){console.log(ms);});
-          });
-        });
+          })
+          .catch(e => console.error(e));
         break;
       case 'sdp-answer':
         console.log("answer received");
