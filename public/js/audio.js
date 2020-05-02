@@ -54,12 +54,11 @@ function getPeerConnection(id) {
     peerConnections[id] = pc;
     pc.addStream(localStream);
     pc.onicecandidate = function (evnt) {
-      socket.emit('msg', { by: currentId, to: id, ice: evnt.candidate, type: 'ice' }, function(ms){console.log(ms);});
+      socket.emit('msg', { by: currentId, to: id, ice: evnt.candidate, type: 'ice' });
     };
     pc.onaddstream = function (evnt) {
       var audio = document.createElement("audio");
       audio.srcObject=evnt.stream;
-      audio.setAttribute("controls", "controls");
       document.body.appendChild(audio);
     };
     return pc;
@@ -70,7 +69,7 @@ function makeOffer(id) {
     pc.createOffer(function (sdp) {
       pc.setLocalDescription(sdp);
       console.log('Creating an offer for', id);
-      socket.emit('msg', { by: currentId, to: id, sdp: sdp, type: 'sdp-offer' }, function(ms){console.log(ms);});
+      socket.emit('msg', { by: currentId, to: id, sdp: sdp, type: 'sdp-offer' });
     }, function (e) {
       console.log(e);
     },
@@ -86,20 +85,18 @@ function handleMessage(data) {
           .then(sdp => pc.setLocalDescription(sdp))
           .then(() => {
             var sdp = pc.localDescription;
-            socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' }, function(ms){console.log(ms);});
+            socket.emit('msg', { by: currentId, to: data.by, sdp: sdp, type: 'sdp-answer' });
           })
           .catch(e => console.error(e));
         break;
       case 'sdp-answer':
         pc.setRemoteDescription(new RTCSessionDescription(data.sdp), function () {
-          console.log('Setting remote description by answer');
         }, function (e) {
           console.error(e);
         });
         break;
       case 'ice':
         if (data.ice) {
-          console.log('Adding ice candidates');
           pc.addIceCandidate(new RTCIceCandidate(data.ice));
         }
         break;
