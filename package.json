@@ -13,7 +13,7 @@
   "author": "Pawan Aichra",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "node-uuid": "^1.4.8",
     "socket.io": "^2.3.0"
   },
